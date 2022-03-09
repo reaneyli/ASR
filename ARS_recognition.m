@@ -11,7 +11,6 @@ addpath('./recognition_src/matlab_io_basicdatatype/');
 addpath('./recognition_src/bipartite');
 
 load("data\recog_sample\Statistical_atlas.mat",'average_position', 'APV','RPV','name');
-
 data_input='data\recog_sample\input\';
 data_gt='data\recog_sample\gt\';
 

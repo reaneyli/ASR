@@ -1,8 +1,11 @@
 function [o1,o2,o3,o4] =  cMIX_tps_shape ( in1,in2,in3,in4,in5,in6,in7,in8,X_sub_gt)
+% function [o1,o2,o3,o4] =  cMIX_tps (apo_topre_reorder_ind,in1,in2,in3,in4,in5,in6,in7,in8)
 
 if in8
     h=figure;
 end
+% fig(1); clf; whitebg('k'); set(gcf,'color',[0 0 0]);
+% set(gcf,'DoubleBuffer','on')
 
 % Init control parameters:
 perT_maxit  = 10;
@@ -33,30 +36,40 @@ z = x;
 
 % init m:
 m              = ones (xmax, ymax) ./ (xmax * ymax);
+
 T0             = max(x(:,1))^2;
-moutlier       = 1/sqrt(T0)*exp(-1);      
+moutlier       = 1/sqrt(T0)*exp(-1);       % /xmax *0.001;
+% moutlier       = 1/xmax*0.01;
 m_outliers_row = ones (1,ymax) * moutlier;
 m_outliers_col = ones (xmax,1) * moutlier;
 
+% m_outliers_row_intenstity=ones (1,ymax) *1/sqrt(max(X_sub_intensity(:,1))^2)*exp(-1);
+% 
+% m_outliers_row_size=ones (1,ymax) *1/sqrt(max(X_sub_size(:,1))^2)*exp(-1);
+
 % init transformation parameters:
+theta = 0; t = zeros (2,1); s = 1;
 c_tps = zeros (xmax,dim+1);
 d_tps = eye   (dim+1, dim+1);
+w     = zeros (xmax+dim+1, dim);
 
 % -------------------------------------------------------------------
 % Annealing procedure:
 % -------------------------------------------------------------------
 T       = T_init;
 T_SC      = SC_T_init;
+
 vx = x;
+vy = y;
+vx_affinw=x;
 
 it_total = 1;
 flag_stop = 0;
-SC_stop=0;
 
 while (flag_stop ~= 1)
     for i=1:perT_maxit     % repeat at each termperature.
         % Given vx, y, Update m:
-        m = cMIX_calc_m (vx, y, T, m_outliers_row, m_outliers_col,T_SC,SC_stop);
+        m = cMIX_calc_m (vx, y, T, m_outliers_row, m_outliers_col,T_SC);
         
         vy= m * y;
         
@@ -116,14 +129,12 @@ o4 = m;
 end
 
 function [m, m_outliers_row, m_outliers_col] = cMIX_calc_m ...
-    (vx, y, T, m_outliers_row, m_outliers_col,T_local,SC_stop)
+    (vx, y, T, m_outliers_row, m_outliers_col,T_local)
 
 [xmax,dim] = size(vx);
 [ymax,dim] = size(y);
 
-if (SC_stop)
 [Cost]=ShapeContext3D_rpm(vx,y);
-end
 
 y_tmp = zeros (xmax, ymax);
 
@@ -131,12 +142,9 @@ for it_dim=1:dim
         y_tmp=y_tmp+ (vx(:,it_dim) - y(:,it_dim)').^2;
 end
 
-if(SC_stop)
-    m_coor = 1/sqrt(T) .* exp (-y_tmp/T-Cost/T_local);
-else
-    m_coor = 1/sqrt(T) .* exp (-y_tmp/T);
-end
-
+m_coor = 1/sqrt(T) .* exp (-y_tmp/T-Cost/T_local);
+% m_coor = 1/sqrt(T) .* exp (-y_tmp/T);
+% normalize accross the outliers as well:
 sy_coor         = sum (m_coor) + m_outliers_row;
 m_coor         = m_coor ./ (ones(xmax,1) * sy_coor);
 m_coor         =m_coor  ./ ( (sum(m_coor'))' * ones(1,ymax));

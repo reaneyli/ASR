@@ -1,8 +1,0 @@
-Features2CostMatrix.obj
-Features2CostMatrix_emxAPI.obj
-Features2CostMatrix_emxutil.obj
-Features2CostMatrix_initialize.obj
-Features2CostMatrix_terminate.obj
-rtGetInf.obj
-rtGetNaN.obj
-rt_nonfinite.obj

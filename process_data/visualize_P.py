@@ -8,7 +8,7 @@ import SimpleITK as sitk
 
 parser = ArgumentParser()
 parser.add_argument("--modelpath", type=str,
-                    dest="modelpath", default='/home/qulab/wm/code/MODEL/N.pth',
+                    dest="modelpath", default='../model_seg/unet3d.pth',
                     help="frequency of saving models")
 parser.add_argument("--savepath", type=str,
                     dest="savepath", default='./pred/',

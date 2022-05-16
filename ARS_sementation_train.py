@@ -20,7 +20,7 @@ parser.add_argument('--weight', type=str, help='the path of the mode weight file
 parser.add_argument("--lr", type=float,
                     dest="lr", default=1e-4,help="learning rate")
 parser.add_argument("--modelpath", type=str,
-                    dest="modelpath", default='/media/qulab/720EA7AE0EA76A351/WM/NEW/MODEL/patch_80_c3_7_1.pth',
+                    dest="modelpath", default=' ',
                     help="frequency of saving models")
 args = parser.parse_args()
 

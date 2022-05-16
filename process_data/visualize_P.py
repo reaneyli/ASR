@@ -8,7 +8,7 @@ import SimpleITK as sitk
 
 parser = ArgumentParser()
 parser.add_argument("--modelpath", type=str,
-                    dest="modelpath", default='../model_seg/unet3d.pth',
+                    dest="modelpath", default='/home/qulab/wm/code4_unet/MODEL/unet3d.pth',
                     help="frequency of saving models")
 parser.add_argument("--savepath", type=str,
                     dest="savepath", default='./pred/',
@@ -26,7 +26,7 @@ savepath = args.savepath
 if not os.path.isdir(savepath):
     os.mkdir(savepath)
 
-path = '/home/qulab/wm/data/test/testimgpatch/'
+path = '/home/qulab/wm/data/test1/testimgpatch/'
 
 def save_img(img,shape, savename):
     img = resize_data(img, shape)
@@ -75,7 +75,7 @@ def visualize():
             print('2 :', y_pre.shape)
             print('2  :', y_pre.max())
             print('2  :', y_pre.min())
-            #y_pre[y_pre < 0.01] = 0
+            y_pre[y_pre < 0.4] = 0
             y_pre = torch.squeeze(y_pre)
             print('y_pre shape :', y_pre.shape)
 

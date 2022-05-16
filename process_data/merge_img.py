@@ -2,15 +2,13 @@ import numpy as np
 from read_data import readimage,resize_data
 import SimpleITK as sitk
 import os
+import math
 
 #创建一个三维的全空数组，大小为（80，80，1600）
 # 创建一张新图
 #利用simpleITK将空数组存为图片，将这张图片分段赋值，最后重新保存
 
-# imgpath = ''
-# savepath = ''
-# filenames = os.listdir(imgpath)
-# shape = (1600,80,80)
+# （80，139，149）！！！
 
 def get_imgshape_list(testimg_path):
     img_shape_list = []
@@ -48,9 +46,11 @@ def merge_D(filepath,savepath):
             image = sitk.ReadImage(filepath + filenames[i]+'/'+ filenames1[j])
             array = sitk.GetArrayFromImage(image)
 
-            array = np.swapaxes(array, 0, 2)
+           # array = np.swapaxes(array, 0, 2)
+         
 
             print(array.shape)
+            
 
             width = 10
             D1 = 80
@@ -65,7 +65,7 @@ def merge_D(filepath,savepath):
         new_image = sitk.GetImageFromArray(new_array)
         sitk.WriteImage(new_image, savepath + name + '.mha')
 
-imgpath = 'G:/pytorch_celegons/data/test/testpatch/'
-test_img_path = 'G:/pytorch_celegons/data/test/testimgMHA/'
-savepath = 'G:/pytorch_celegons/data/test/testpatch/'
+imgpath = '/home/qulab/wm/code4_unet/pred/'
+test_img_path = '/home/qulab/wm/data/test1/testlabelMHA/'
+savepath = '/home/qulab/wm/code4_unet/result/'
 merge_D(imgpath,savepath)

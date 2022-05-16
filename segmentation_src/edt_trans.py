@@ -20,6 +20,9 @@ def save_edt_img(datapath,savepath):
         name, extension = os.path.splitext(fullname)
         name1, extension1 = os.path.splitext(name)
 
+        # print('name, extension ',name,extension)
+        # print('name1, extension1',name1, extension1)
+        # print('name2, extension2', name2, extension2)
         image = sitk.GetImageFromArray(distance_array)
 
         sitk.WriteImage(image, savepath + name1 + '_edt' + '.mha')

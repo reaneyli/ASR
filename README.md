@@ -1,4 +1,4 @@
-# ASR： Automated whole-body cellular segmentation and recognition of young Caenorhabditis elegans
+# ASR： Automated segmentation and recognition of C.elegans whole-body cells
 
 ![pipeline](https://github.com/reaneyli/ASR/blob/main/pipeline.png)
 
